@@ -6,3 +6,7 @@ with open(filename, 'rb') as f:
   array = np.reshape(data, [n, n, n])
 
 # this array is the "by slice" transpose of the R result ...
+
+# now try to read a RcppCNPy object
+m = np.load("/tmp/randmat.npy")
+m = np.reshape( np.load("/tmp/randmat3.npy"), [n, n, n])
