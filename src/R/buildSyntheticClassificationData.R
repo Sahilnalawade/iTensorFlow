@@ -22,6 +22,8 @@ for ( ct in 1:2 ) {
     ptsi = makePointsImage( pts, msk, radius = baserad )
     ptsi = ptsi + makePointsImage( pts, msk, radius = baserad + plusrad[ct] )
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )
+    ofn = paste( odir, "/", classes[ct], "/", sep='' )
+    dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
     ofn = paste( odir, "/", classes[ct], "/sphere", k, classes[ct], ".nii.gz", sep='' )
     antsImageWrite( ptsi, ofn )
     comdf[ myct, ] = getCenterOfMass( ptsi )
