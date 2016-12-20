@@ -4,7 +4,7 @@ temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
   stop("run this script within the iTensorFlow base dir")
 n = 50
-idim = 2
+idim = 3
 idim = rep( 64, idim )
 odir = paste( "data/dim", length(idim), "D/classification/spheres", sep='' )
 img = makeImage( idim, voxval = 0,
@@ -17,7 +17,7 @@ if ( length( idim ) == 3 ) comdf = data.frame( x=0, y=0, z=0 )
 if ( length( idim ) == 2 ) comdf = data.frame( x=0, y=0 )
 myct = 1
 for ( ct in 1:2 ) {
-  for ( k in 10:(10+n) ) {
+  for ( k in 1000:(1000+n) ) {
     pts = matrix( nrow = 1, ncol = length( idim ) )
     ctr = idim / 2
     pts[1, ] = antsTransformIndexToPhysicalPoint( img, ctr ) +
