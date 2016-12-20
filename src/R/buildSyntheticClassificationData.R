@@ -1,16 +1,17 @@
 library( ANTsR )
 # run this in iTensorFlow base directory
-odir = "data/dim3D/classification/spheres"
 n = 50
-idim = 3
-idim = rep( 64, idim )
+idim = 2
+idim = rep( 32, idim )
+odir = paste( "data/dim", length(idim), "D/classification/spheres", sep='' )
 img = makeImage( idim, voxval = 0,
   spacing = rep(1, length(idim)) )
 msk = img + 1
 baserad = 5
 plusrad = c( 1, 2 )
 classes = c("class1","class2")
-comdf = data.frame( x=0, y=0, z=0 )
+if ( length( idim ) == 3 ) comdf = data.frame( x=0, y=0, z=0 )
+if ( length( idim ) == 2 ) comdf = data.frame( x=0, y=0 )
 myct = 1
 for ( ct in 1:2 ) {
   for ( k in 10:(10+n) ) {
