@@ -27,7 +27,7 @@ if ( mydim == 3 ) comdf = data.frame( x=0, y=0, z=0 )
 if ( mydim == 2 ) comdf = data.frame( x=0, y=0 )
 myct = 1
 for ( ct in 1:2 ) {
-  for ( k in 1000:(1000+n) ) {
+  for ( k in 1000:(1000+n-1) ) {
     pts = matrix( nrow = 1, ncol = mydim )
     ctr = idim / 2
     pts[1, ] = antsTransformIndexToPhysicalPoint( img, ctr ) +
