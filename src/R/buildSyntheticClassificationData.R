@@ -10,6 +10,8 @@ msk = img + 1
 baserad = 5
 plusrad = c( 1, 2 )
 classes = c("class1","class2")
+comdf = data.frame( x=0, y=0, z=0 )
+myct = 1
 for ( ct in 1:2 ) {
   for ( k in 10:(10+n) ) {
     pts = matrix( nrow = 1, ncol = length( idim ) )
@@ -21,7 +23,10 @@ for ( ct in 1:2 ) {
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )
     ofn = paste( odir, "/", classes[ct], "/sphere", k, classes[ct], ".nii.gz", sep='' )
     antsImageWrite( ptsi, ofn )
+    comdf[ myct, ] = getCenterOfMass( ptsi )
+    myct = myct + 1
 #    plot( ptsi, doCropping=F, nslices=20, axis=2, window.img=c(0,max(ptsi)) )
-#    Sys.sleep( 1 )
     }
   }
+ofn = paste( odir, "/spheres", length( idim ), "CoM.csv", sep='' )
+write.csv( comdf, ofn, row.names=F )
