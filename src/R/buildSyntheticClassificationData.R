@@ -1,8 +1,11 @@
 library( ANTsR )
 # run this in iTensorFlow base directory
+temp = unlist(strsplit(getwd(),"/"))
+if ( temp[ length( temp ) ] != "iTensorFlow" )
+  stop("run this script within the iTensorFlow base dir")
 n = 50
 idim = 2
-idim = rep( 32, idim )
+idim = rep( 64, idim )
 odir = paste( "data/dim", length(idim), "D/classification/spheres", sep='' )
 img = makeImage( idim, voxval = 0,
   spacing = rep(1, length(idim)) )
