@@ -36,7 +36,7 @@ model.compile(loss='binary_crossentropy', optimizer=rms, metrics=['accuracy'])
 batch_size = 32
 nb_epoch = 3
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-          show_accuracy=True, verbose=2, validation_data=(X_test, Y_test))
+          verbose=2, validation_data=(X_test, Y_test))
 
 score = model.evaluate(X_test, Y_test, verbose=0)
 print('Test score:', score[0])
