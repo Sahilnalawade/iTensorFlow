@@ -53,3 +53,30 @@ reading images.
 there is currently one **missing link** between the synthetic R-based data and
 the keras code:  we need to be able to read nifti images (via nibabel) into a
 keras ready data structure.
+
+
+## some notes on conv nets, mostly with keras
+
+[keras 3d conv code](https://github.com/fchollet/keras/issues/4099) but i think this should work with tensorflow backend now
+
+[3d cnn action example](http://learnandshare645.blogspot.com/2016/06/3d-cnn-in-keras-action-recognition.html)
+
+[shapes 3d here](http://aetros.com/adrienj/3DCNN/code)
+
+​copied to​ [here](http://aetros.com/stnava/3DCNN/code)
+
+​maybe this would be a good one to try to reproduce:​
+
+[C3D model used with a fork of Caffe to the Sports1M dataset migrated to Keras](https://imatge.upc.edu/web/resources/c3d-model-keras-trained-over-sports-1m)
+
+[C3D model used with a fork of Caffe to the Sports1M dataset migrated to Keras gist](https://gist.github.com/albertomontesg/d8b21a179c1e6cca0480ebdf292c34d2)
+
+[a u-net](https://github.com/jocicmarko/ultrasound-nerve-segmentation/blob/master/train.py)
+
+[kaggle tutorial for dicom heart data](https://github.com/jocicmarko/kaggle-dsb2-keras)
+
+[auto encoder for image segmentation](http://pradyu1993.github.io/2016/03/08/segnet-post.html)
+
+[brain lesion segmentation](https://github.com/naldeborgh7575/brain_segmentation)
+
+[deep medic](https://github.com/Kamnitsask/deepmedic)
