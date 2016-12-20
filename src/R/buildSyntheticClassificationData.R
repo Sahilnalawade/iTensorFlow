@@ -5,7 +5,7 @@ temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
   stop("run this script within the iTensorFlow base dir")
 n = 50
-if ( ! exists("mydim") ) mydim = 3
+if ( ! exists("mydim") ) mydim = 2
 if ( mydim == 2 ) ext = ".jpg" else ext = ".nii.gz"
 if ( mydim == 2 ) ext = ".nii.gz" else ext = ".nii.gz"
 idim = rep( 64, mydim )

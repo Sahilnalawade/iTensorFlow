@@ -10,7 +10,16 @@ currently, the only useful contribution here is:
 buildSyntheticClassificationData.R
 ```
 
-which will generate a synthetic dataset of 100 images.  each image is a noisy
+to run this script and generate data, do:
+
+```
+cd iTensorFlow
+# open R, then
+source( "src/R/buildSyntheticClassificationData.R" )
+```
+
+this will generate a synthetic dataset of 100 2D images.  you can generate 3D
+example datasets by modifying the script with `mydim=3`. each image is a noisy
 sphere with a thin rim of lighter intensity embedded in a background of noise.
 there are 50 images in each of 2 classes.  the 2nd class has a thicker rim.
 
