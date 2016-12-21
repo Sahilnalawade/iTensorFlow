@@ -1,5 +1,7 @@
 library( ANTsR )
 library( jpeg )
+library( ANTsRNpy )
+ext2 = ".npy"
 # run this in iTensorFlow base directory
 temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
@@ -35,6 +37,7 @@ for ( ct in 1:2 ) {
     ptsi = makePointsImage( pts, msk, radius = baserad )
     ptsi = ptsi + makePointsImage( pts, msk, radius = baserad + plusrad[ct] )
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )
+    # antsr framework
     ofn = paste( odir, "/singlechannel/", classes[ct], "/", sep='' )
     dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
     ofn = paste( odir, "/singlechannel/", classes[ct], "/sphere", k, classes[ct], ext, sep='' )
@@ -44,6 +47,16 @@ for ( ct in 1:2 ) {
     dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
     ofn = paste( odir, "/multichannel/", classes[ct], "/sphere", k, classes[ct], ext, sep='' )
     antsImageWrite( ptsm, ofn )
+    # numpy framework
+    ofn = paste( odir, "/numpysinglechannel/", classes[ct], "/", sep='' )
+    dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
+    ofn = paste( odir, "/numpysinglechannel/", classes[ct], "/sphere", k, classes[ct], ext2, sep='' )
+    writeANTsImageToNumpy( ptsi, ofn )
+    ptsm = mergeChannels( lappend( ptsi, spatlist ) )       # multichannel version
+    ofn = paste( odir, "/numpymultichannel/", classes[ct], "/", sep='' )
+    dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
+    ofn = paste( odir, "/numpymultichannel/", classes[ct], "/sphere", k, classes[ct], ext2, sep='' )
+    writeANTsImageToNumpy( ptsm, ofn )
     comdf[ myct, ] = getCenterOfMass( ptsi )
     myct = myct + 1
 #    plot( ptsi, doCropping=F, nslices=20, axis=2, window.img=c(0,max(ptsi)) )
