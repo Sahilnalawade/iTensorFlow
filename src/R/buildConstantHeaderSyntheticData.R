@@ -33,7 +33,7 @@ for ( ct in 1:2 ) {
     pts = matrix( nrow = 1, ncol = mydim )
     ctr = idim / 2
     pts[1, ] = antsTransformIndexToPhysicalPoint( img, ctr ) +
-      round( rnorm( length(idim), 5, 2 ) )
+      rnorm( length(idim), 0, 2 )
     ptsi = makePointsImage( pts, msk, radius = baserad )
     ptsi = ptsi + makePointsImage( pts, msk, radius = baserad + plusrad[ct] )
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )

@@ -11,11 +11,17 @@ if ( ! exists("mydim") ) mydim = 2
 if ( mydim == 2 ) ext = ".nii.gz" else ext = ".nii.gz"
 idim = rep( 64, mydim )
 odir = paste( "data/dim", length(idim), "D/classification/varspheres", sep='' )
-baserad = 5
-plusrad = c( 1, 2 )
+baserad = 15
+plusrad = c( 3, 5 )
 classes = c("class1","class2")
-if ( mydim == 3 ) comdf = data.frame( x=0, y=0, z=0 )
-if ( mydim == 2 ) comdf = data.frame( x=0, y=0 )
+if ( mydim == 3 ) {
+  comdf = data.frame( x=0, y=0, z=0 )
+}
+if ( mydim == 2 ) {
+  comdf = data.frame( x=0, y=0 )
+  txdf = data.frame( matrix( nrow=1, ncol=5 ) )
+  colnames( txdf ) = paste( "p", 1:ncol(txdf), sep='' )
+}
 myct = 1
 for ( ct in 1:2 ) {
   for ( k in 1000:(1000+n-1) ) {
@@ -24,7 +30,7 @@ for ( ct in 1:2 ) {
 # as extra channels.  note that these channels, generally speaking, encode
 # **spatial correspondence** which is a very general concept that can be
 # extended in a variety of ways to aid prediction tasks from imaging.
-    randspc = rnorm( mydim, mean=1, sd=0.25 )
+    randspc = rnorm( mydim, mean=2, sd=0.25 )
     img = makeImage( idim, voxval = 0,
       spacing = randspc )
     msk = img + 1
@@ -37,11 +43,29 @@ for ( ct in 1:2 ) {
     } else spatlist = list( spatx,spaty )
     pts = matrix( nrow = 1, ncol = mydim )
     ctr = idim / 2
-    pts[1, ] = antsTransformIndexToPhysicalPoint( img, ctr ) +
-      round( rnorm( length(idim), 5, 2 ) )
+    ptctr = antsTransformIndexToPhysicalPoint( img, ctr )
+    pts[1, ] = ptctr
     ptsi = makePointsImage( pts, msk, radius = baserad )
     ptsi = ptsi + makePointsImage( pts, msk, radius = baserad + plusrad[ct] )
+    if ( mydim == 2 ) {
+      # stretch
+      txStretch = createAntsrTransform( "AffineTransform", dim=2 )
+      params = getAntsrTransformParameters( txStretch )
+      params[1] = rnorm( 1, 1, 0.1 )
+      setAntsrTransformParameters(txStretch, params)
+      # random rotation
+      myradians = rnorm(1,0,180) / 180
+      mytrans = rnorm( length(idim), 0, round(baserad)*0.5 )
+      txRotate <- createAntsrTransform( type="Euler2DTransform",
+        parameters = c(myradians,mytrans), fixed.parameters = ptctr )
+      tx = composeAntsrTransforms(list( txRotate, txStretch))
+      ptsi = applyAntsrTransformToImage( txRotate, ptsi, ptsi )
+      # now - we can store tx ground truth parameters
+      txdf[myct,] = c( getAntsrTransformParameters( txRotate ),
+        getAntsrTransformFixedParameters( txRotate ) )
+      }
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )
+    plot( ptsi, doCropping=F, nslices=20, axis=2, window.img=c(0,max(ptsi)) )
     # antsr framework
     ofn = paste( odir, "/singlechannel/", classes[ct], "/", sep='' )
     dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
@@ -64,8 +88,9 @@ for ( ct in 1:2 ) {
     writeANTsImageToNumpy( ptsm, ofn )
     comdf[ myct, ] = getCenterOfMass( ptsi )
     myct = myct + 1
-#    plot( ptsi, doCropping=F, nslices=20, axis=2, window.img=c(0,max(ptsi)) )
     }
   }
 ofn = paste( odir, "/spheres", mydim, "CoM.csv", sep='' )
 write.csv( comdf, ofn, row.names=F )
+ofn = paste( odir, "/spheres", mydim, "Transforms.csv", sep='' )
+write.csv( txdf, ofn, row.names=F )

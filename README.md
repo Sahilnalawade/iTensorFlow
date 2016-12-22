@@ -4,18 +4,19 @@
 this is a set of starter examples for linking R-based image processing
 to keras/tensorflow based deep learning.
 
-currently, the only useful contribution here is:
+currently, the only useful contributions:
 
 ```
-buildSyntheticClassificationData.R
+buildConstantHeaderSyntheticData.R
+buildVaryingHeaderSyntheticData.R
 ```
 
-to run this script and generate data, do:
+to run one of the scripts and generate data, do:
 
 ```
 cd iTensorFlow
 # open R, then
-source( "src/R/buildSyntheticClassificationData.R" )
+source( "src/R/buildVaryingHeaderSyntheticData.R" )
 ```
 
 this will generate a synthetic dataset of 100 2D images.  you can generate 3D
@@ -24,14 +25,20 @@ sphere with a thin rim of lighter intensity embedded in a background of noise.
 there are 50 images in each of 2 classes.  the 2nd class has a thicker rim.
 
 this synthetic data allows us to test either regression or classification networks.
-the regression problem has only one class with ground truth defined by the files:
+the regression problem has ground truth defined by the files:
 
 ```
 # in iTensorFlow root dir
 find ./data -name "*sv"
 # ./data/dim2D/classification/spheres/spheres2CoM.csv
+# ./data/dim2D/classification/varspheres/spheres2Transforms.csv
 # ./data/dim3D/classification/spheres/spheres3CoM.csv
 ```
+
+the interesting problem is `spheres2Transforms.csv` which may be used to perform
+supervised learning of the physical space geometric mapping from the image data
+to a fixed template coordinate system.  ideally, learning the mapping should be
+independent of the image spacing (sampling rate).
 
 the classification problem is just based on the thickness of the rim - just a
 two class problem.
