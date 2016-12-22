@@ -39,3 +39,36 @@ from skimage import io
 import SimpleITK as sitk
 fn = '/tmp/kbykbykfloatmc.nii.gz'
 myimg = io.imread( fn, plugin='simpleitk').astype(float)
+
+
+import numpy as np
+n = 256
+with open( fn, 'rb') as f:
+   data = np.fromfile( f, dtype=np.double )
+   array = np.reshape( data, [n, n] )
+
+
+from PIL import Image
+import numpy as np
+
+w, h = 512, 512
+data = np.zeros((h, w, 3), dtype=np.uint8)
+data[256, 256] = [255, 0, 0]
+img = Image.fromarray(data, 'RGB')
+img.show()
+
+w, h = 512, 512
+data = np.zeros((h, w), dtype='d')
+data[256, 256] = 1.5
+img = Image.fromarray(data, 'F')
+img.show()
+
+from PIL import Image
+import numpy as np
+from scipy.misc import toimage
+o = 182
+m = 218
+n = 182
+data = np.load( ofn )
+array = np.reshape( data, [ o, m, n ] )
+toimage(array).show()

@@ -33,12 +33,14 @@ find ./data -name "*sv"
 # ./data/dim2D/classification/spheres/spheres2CoM.csv
 # ./data/dim2D/classification/varspheres/spheres2Transforms.csv
 # ./data/dim3D/classification/spheres/spheres3CoM.csv
+# ./data/dim2D/classification/varspheres/spheres3Transforms.csv
 ```
 
-the interesting problem is `spheres2Transforms.csv` which may be used to perform
+the interesting problem is `spheres*Transforms.csv` which may be used to perform
 supervised learning of the physical space geometric mapping from the image data
 to a fixed template coordinate system.  ideally, learning the mapping should be
-independent of the image spacing (sampling rate).
+independent of the image spacing (sampling rate).  Currently, the parameters to
+learn include non-uniform stretching, rotations and translations.
 
 the classification problem is just based on the thickness of the rim - just a
 two class problem.
