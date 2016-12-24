@@ -65,7 +65,7 @@ def mnist_conv():
     model.add(Flatten())
     model.add(Dense(128))
     model.add(Activation('relu'))
-    model.add(Dropout(0.05))
+    model.add(Dropout(0.5))
     model.add(Dense( Y_test.shape[1] ))
     return model
 
@@ -75,14 +75,14 @@ rms = RMSprop()
 model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
 
 batch_size = 100
-nb_epoch = 20
+nb_epoch = 50
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 
-score = model.evaluate(X_train, Y_train, verbose=0)
+trscore = model.evaluate(X_train, Y_train, verbose=0)
 print('Train score:', score[0])
 print('Train accuracy:', score[1])
-score = model.evaluate(X_test, Y_test, verbose=0)
+tescore = model.evaluate(X_test, Y_test, verbose=0)
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
 
@@ -93,3 +93,5 @@ for i in range(Y_test.shape[1]):
 Y_pred = model.predict( X_test )
 for i in range(Y_test.shape[1]):
 	print( np.corrcoef(Y_test[:,i],Y_pred[:,i])[0,1] )
+
+print("not bad")
