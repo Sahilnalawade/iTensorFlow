@@ -43,8 +43,8 @@ else:
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
+X_train /= 2.5
+X_test /= 2.5
 print('X_train shape:', X_train.shape)
 print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
@@ -55,7 +55,7 @@ def mnist_conv():
     pool_size = (2, 2)
     model = Sequential()
     model.add(Convolution2D( 32, kernel_size[0], kernel_size[1],
-                            border_mode='valid',
+                            border_mode='valid', init = 'normal',
                             input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Convolution2D(nb_filters, kernel_size[0], kernel_size[1]))
@@ -65,7 +65,7 @@ def mnist_conv():
     model.add(Flatten())
     model.add(Dense(128))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.05))
     model.add(Dense( Y_test.shape[1] ))
     return model
 
@@ -74,17 +74,17 @@ model = mnist_conv()
 rms = RMSprop()
 model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
 
-batch_size = 100
+batch_size = 32
 nb_epoch = 50
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 
 trscore = model.evaluate(X_train, Y_train, verbose=0)
-print('Train score:', score[0])
-print('Train accuracy:', score[1])
+print('Train score:', trscore[0])
+print('Train accuracy:', trscore[1])
 tescore = model.evaluate(X_test, Y_test, verbose=0)
-print('Test score:', score[0])
-print('Test accuracy:', score[1])
+print('Test score:', tescore[0])
+print('Test accuracy:', tescore[1])
 
 Y_pred = model.predict( X_train )
 for i in range(Y_test.shape[1]):
