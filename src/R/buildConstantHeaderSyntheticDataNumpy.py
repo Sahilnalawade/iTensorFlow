@@ -9,7 +9,7 @@ base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
 img_dir = os.path.join( base_dir,'data/dim2D/regression/spheresRad/train/singlechannel/')
 com_path= os.path.join( base_dir,'data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv')
 targets = np.array( pd.read_csv(com_path) )
-allnpy = glob.glob( img_dir + "*npy" )
+allnpy = sorted( glob.glob( img_dir + "*npy" ) )
 # make an array for all this
 n = len( allnpy )
 exdata = np.load( allnpy[1] )
@@ -24,7 +24,7 @@ np.savez( img_dir + "all.npz", myarr )
 img_dir = os.path.join( base_dir,'data/dim2D/regression/spheresRad/test/singlechannel/')
 com_path= os.path.join( base_dir,'data/dim2D/regression/spheresRad/test/singlechannel/spheres2Radius.csv')
 tetargets = np.array( pd.read_csv(com_path) )
-allnpy = glob.glob( img_dir + "*npy" )
+allnpy = sorted( glob.glob( img_dir + "*npy" ) )
 # make an array for all this
 n = len( allnpy )
 exdata = np.load( allnpy[1] )
