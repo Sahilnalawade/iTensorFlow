@@ -103,7 +103,7 @@ def mnist_conv():
     model.add(Dense( Y_test.shape[1] ))
     return model
 
-model = unet_conv()
+model = mnist_conv()
 
 rms = RMSprop()
 model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
