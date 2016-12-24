@@ -29,7 +29,7 @@ for ( ct in 1:2 ) {
     r2 = rnorm(1,baserad,1)
     ptsi = makePointsImage( pts, msk, radius = r1 )
     ptsi = ptsi + makePointsImage( pts, msk, radius = r2  )
-    comdf[ myct, ] = getCenterOfMass( ptsi )
+    comdf[ myct,  ] = c( getCenterOfMass( ptsi ), r1, r2 )
     ptsi[ msk == 1 ] = ptsi[ msk == 1 ] + rnorm( sum(msk==1),  0, 0.1 )
     # antsr framework
     ofn = paste( odir[ct], "/", sep='' )

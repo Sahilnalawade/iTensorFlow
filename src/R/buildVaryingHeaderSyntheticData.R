@@ -62,14 +62,14 @@ for ( ct in 1:2 ) {
       # stretch
       txStretch = createAntsrTransform( "AffineTransform", dim=2 )
       params = getAntsrTransformParameters( txStretch )
-      params[1] = rnorm( 1, 1, 0.2 )
+      params[1] = params[4] = rnorm( 1, 1, 0.15 )
       setAntsrTransformParameters(txStretch, params)
       # random rotation
       myradians = rnorm(1,0,180) / 180
       mytrans = rnorm( length(idim), 0, round(baserad)*0.5 )
       txRotate <- createAntsrTransform( type="Euler2DTransform",
         parameters = c(myradians,mytrans), fixed.parameters = ptctr )
-      tx = composeAntsrTransforms(list( txRotate, txStretch))
+      tx = composeAntsrTransforms(list( txRotate, txStretch ))
       ptsi = applyAntsrTransformToImage( tx, ptsi, ptsi )
       # now - we can store tx ground truth parameters
       txdf[myct,] = c( params[1], getAntsrTransformParameters( txRotate ),
