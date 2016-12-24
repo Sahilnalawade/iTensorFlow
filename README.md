@@ -89,3 +89,24 @@ keras ready data structure.
 [brain lesion segmentation](https://github.com/naldeborgh7575/brain_segmentation)
 
 [deep medic](https://github.com/Kamnitsask/deepmedic)
+
+
+## a decent example from data creation to generalizable output
+
+prepare data from R
+
+```
+Rscript src/R/buildConstantHeaderSyntheticDataNumpy.R
+```
+
+pickle data in python
+
+```
+python src/R/buildConstantHeaderSyntheticDataNumpy.py
+```
+
+run mnist-based convnet
+
+```
+python src/keras/veryBasicKerasImageConvnet.py
+```
