@@ -3,6 +3,7 @@
 ## standard imports
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.plotly as py
 import pandas as pd
 import os
 import nibabel as nib
@@ -94,4 +95,7 @@ Y_pred = model.predict( X_test )
 for i in range(Y_test.shape[1]):
 	print( np.corrcoef(Y_test[:,i],Y_pred[:,i])[0,1] )
 
-print("not bad")
+i = 2
+x, y = Y_test[:,i],Y_pred[:,i]
+# plt.scatter(x, y, alpha=.1, s=400)
+# plt.show()
