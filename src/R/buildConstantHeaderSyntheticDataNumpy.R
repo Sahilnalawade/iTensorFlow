@@ -17,7 +17,7 @@ for ( ct in 1:2 ) {
   for ( k in 1000:(1000+n[ct]-1) ) {
     r1 = rnorm( 1, baserad, 1 )
     r2 = rnorm( 1, baserad, 1 )
-    sim = simulateSphereData( img, radius = c( r1, r2 ), positionNoiseLevel = c( 0, 3 ) )
+    sim = simulateSphereData( img, radius = c( r1, r1+r2 ), positionNoiseLevel = c( 0, 3 ) )
     comdf[ myct,  ] = c( sim$centerOfMass, r1, r2 )
     # antsr framework
     ofn = paste( odir[ct], "/", sep='' )
