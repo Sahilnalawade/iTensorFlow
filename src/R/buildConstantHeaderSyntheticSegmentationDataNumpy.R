@@ -25,7 +25,7 @@ for ( ct in 1:length( odir ) ) {
     r1 = rnorm( 1, baserad, 1 )
     r2 = rnorm( 1, round( baserad * 0.75 ) , 1 )
     sim = simulateSphereData( img, radius = c( r1, r1+r2 ),
-      noiseLevel = c(0, 0.01 ), positionNoiseLevel = c( 0, 2 ) )
+      noiseLevel = c(0, 0.1 ), positionNoiseLevel = c( 0, 2 ) )
     mymask = morphology( getMask( sim$image ), "dilate", 2 )
     # plot( sim$image, mymask, alpha=0.25, window.img=c(0,2) )
     patches = imageToPatches( sim$image, mask = mymask, radius = patchRad,
