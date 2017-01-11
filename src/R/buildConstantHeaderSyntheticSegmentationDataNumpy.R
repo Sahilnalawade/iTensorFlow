@@ -29,6 +29,7 @@ for ( ct in 1:length( odir ) ) {
     patches = imageToPatches( sim$image, mask = mymask, radius = 3,
       groundTruth = sim$groundTruth$labels[ mymask == 1 ],
       npatches = nptch, randomize = TRUE )
+    if ( ct == 1 & k == lo ) print( patches$patches[[1]] )
     patches$patchSummary
     if ( k == lo ) mydf = patches$patchSummary else mydf = rbind( mydf, patches$patchSummary )
     for ( ww in 1:length( patches$patches ) ) {
