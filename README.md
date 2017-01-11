@@ -114,3 +114,27 @@ run mnist-based convnet
 ```
 python src/keras/veryBasicKerasImageConvnet.py
 ```
+
+## a segmentation example from data creation to generalizable output
+
+WIP - not done
+
+prepare data from R
+
+```
+Rscript src/R/buildConstantHeaderSyntheticSegmentationDataNumpy.R
+```
+
+pickle data in python.
+
+```
+python src/r2python/pickleNpyData.py \
+  -i data/dim2D/segmentation/spheresRad/train/singlechannel/ \
+  -j data/dim2D/segmentation/spheresRad/train/singlechannel/spheres2Segmentation.csv
+```
+
+run mnist-based convnet
+
+```
+python src/keras/veryBasicKerasSegmentationConvnet.py
+```

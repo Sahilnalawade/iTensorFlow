@@ -6,7 +6,7 @@ temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
   stop("run this script within the iTensorFlow base dir")
 n = c(1000,200)
-n = c(500,50)
+n = c(50,5)
 mydim = 2
 idim = rep( 32, mydim )
 odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/singlechannel","test/singlechannel"),"/", sep='' )
@@ -29,6 +29,7 @@ for ( ct in 1:length( odir ) ) {
     patches = imageToPatches( sim$image, mask = mymask, radius = 3,
       groundTruth = sim$groundTruth$labels[ mymask == 1 ],
       npatches = nptch, randomize = TRUE )
+    patches$patchSummary
     if ( k == lo ) mydf = patches$patchSummary else mydf = rbind( mydf, patches$patchSummary )
     for ( ww in 1:length( patches$patches ) ) {
   #    plot( patches$patches[[ww]], window.img = c(0,2.5), doCropping = F )
@@ -42,5 +43,5 @@ for ( ct in 1:length( odir ) ) {
     }
     if ( myct != nrow( mydf ) ) stop("Error")
     ofn = paste( odir[ct], "/spheres", mydim, "Segmentation.csv", sep='' )
-    write.csv( mydf, ofn, row.names=F )
+    write.csv( mydf[,-c(1,2),], ofn, row.names=F )
   }
