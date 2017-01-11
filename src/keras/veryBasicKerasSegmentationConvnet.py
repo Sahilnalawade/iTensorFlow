@@ -141,4 +141,5 @@ teincorrect_indices = np.nonzero(tepredicted_classes != Y_testC[:,0])[0]
 
 fracr = tecorrect_indices.shape[0] / ( Y_testC.shape[0] )
 fracw = teincorrect_indices.shape[0] / ( Y_testC.shape[0] )
+print( " done " )
 print( str( fracr * 100.0 ) + "% right " + str( fracw * 100.0 ) + "% wrong" )
