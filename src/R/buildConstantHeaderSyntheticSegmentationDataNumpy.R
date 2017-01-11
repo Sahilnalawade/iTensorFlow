@@ -12,6 +12,7 @@ idim = rep( 32, mydim )
 odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/singlechannel","test/singlechannel"),"/", sep='' )
 img = makeImage( idim, voxval = 0, spacing = rep(1, length(idim)) )
 baserad = 4
+patchRad = 5
 msk = img * 0 + 1
 spatmask = imageDomainToSpatialMatrix( img, msk )
 nptch = 10
@@ -23,10 +24,11 @@ for ( ct in 1:length( odir ) ) {
   for ( k in lo:(lo+n[ct]-1) ) {
     r1 = rnorm( 1, baserad, 1 )
     r2 = rnorm( 1, round( baserad * 0.75 ) , 1 )
-    sim = simulateSphereData( img, radius = c( r1, r1+r2 ), positionNoiseLevel = c( 0, 2 ) )
+    sim = simulateSphereData( img, radius = c( r1, r1+r2 ),
+      noiseLevel = c(0, 0.01 ), positionNoiseLevel = c( 0, 2 ) )
     mymask = morphology( getMask( sim$image ), "dilate", 2 )
     # plot( sim$image, mymask, alpha=0.25, window.img=c(0,2) )
-    patches = imageToPatches( sim$image, mask = mymask, radius = 3,
+    patches = imageToPatches( sim$image, mask = mymask, radius = patchRad,
       groundTruth = sim$groundTruth$labels[ mymask == 1 ],
       npatches = nptch, randomize = TRUE )
     if ( ct == 1 & k == lo ) print( patches$patches[[1]] )

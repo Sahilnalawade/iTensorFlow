@@ -104,6 +104,8 @@ data and the script will replace `train` with `test` in the directory and
 file name and generate pickles for both train and test datasets.
 
 ```
+# this function assumes input data is square and dimensions can be inferred
+# from the sqrt of the array length (for 2D)
 python src/r2python/pickleNpyData.py \
   -i data/dim2D/regression/spheresRad/train/singlechannel/ \
   -j data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv

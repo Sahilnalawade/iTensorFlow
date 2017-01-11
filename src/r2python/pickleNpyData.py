@@ -32,7 +32,7 @@ def main(argv):
    # make an array for all this
    n = len( allnpy )
    exdata = np.load( allnpy[1] )
-   nx = int( np.sqrt( exdata.shape[0]  ) )
+   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
    exarr  = exdata.reshape( [nx, nx ])
    myarr = np.ones( ( n, nx, nx ) )
    for i in range( len( allnpy ) ) :

@@ -27,12 +27,14 @@ tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/sing
 
 # read numpy data
 X_train = np.load( img_fn )['arr_0']
-Y_train = np.array( pd.read_csv(com_path) )
-Y_train = to_categorical(Y_train)
+Y_trainC = np.array( pd.read_csv(com_path) )
+Y_trainC = X_train[:,5,5].round()
+Y_train = to_categorical(Y_trainC)
 
 X_test = np.load( teimg_fn )['arr_0']
-Y_test = np.array( pd.read_csv(tecom_path) )
-Y_test = to_categorical(Y_test)
+Y_testC = np.array( pd.read_csv(tecom_path) )
+Y_testC = X_test[:,5,5].round()
+Y_test = to_categorical(Y_testC)
 
 nx = X_test.shape[1]
 
@@ -119,21 +121,17 @@ model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 
 trscore = model.evaluate(X_train, Y_train, verbose=0)
-print('Train score:', trscore[0])
-print('Train accuracy:', trscore[1])
+print('Train score:', trscore )
 tescore = model.evaluate(X_test, Y_test, verbose=0)
-print('Test score:', tescore[0])
-print('Test accuracy:', tescore[1])
+print('Test score:', tescore )
 
+################################################################################
 Y_pred = model.predict( X_train )
-for i in range(Y_test.shape[1]):
-	print( np.corrcoef(Y_train[:,i],Y_pred[:,i])[0,1] )
+predicted_classes = model.predict_classes(X_train)
+correct_indices = np.nonzero(predicted_classes == Y_trainC[:,0])[0]
+incorrect_indices = np.nonzero(predicted_classes != Y_trainC[:,0])[0]
 
-Y_pred = model.predict( X_test )
-for i in range(Y_test.shape[1]):
-	print( np.corrcoef(Y_test[:,i],Y_pred[:,i])[0,1] )
-
-i = 2
-x, y = Y_test[:,i],Y_pred[:,i]
-# plt.scatter(x, y, alpha=.1, s=400)
-# plt.show()
+################################################################################
+tepredicted_classes = model.predict_classes(X_test)
+tecorrect_indices = np.nonzero(tepredicted_classes == Y_testC[:,0])[0]
+teincorrect_indices = np.nonzero(tepredicted_classes != Y_testC[:,0])[0]
