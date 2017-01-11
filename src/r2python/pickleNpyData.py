@@ -38,7 +38,7 @@ def main(argv):
    for i in range( len( allnpy ) ) :
        myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
 
-#   np.savez( img_dir + "all.npz", myarr )
+   np.savez( img_dir + "all.npz", myarr )
    imageDir2 = imageDir.replace("train", "test")
    csvFile2 = csvFile.replace("train", "test")
    img_dir = os.path.join( base_dir,imageDir2)
@@ -54,7 +54,7 @@ def main(argv):
    for i in range( len( allnpy ) ) :
        temyarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
 
-#   np.savez( img_dir + "all.npz", temyarr )
+   np.savez( img_dir + "all.npz", temyarr )
 
 if __name__ == "__main__":
    main(sys.argv[1:])
