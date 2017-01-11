@@ -93,6 +93,9 @@ keras ready data structure.
 
 ## a decent example from data creation to generalizable output
 
+** very critical in below examples is to have correct alphanumeric ordering
+of the written filenames **
+
 prepare data from R
 
 ```
