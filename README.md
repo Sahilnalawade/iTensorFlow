@@ -99,7 +99,9 @@ prepare data from R
 Rscript src/R/buildConstantHeaderSyntheticDataNumpy.R
 ```
 
-pickle data in python
+pickle data in python.  one passes the image directory and csv for the train
+data and the script will replace `train` with `test` in the directory and
+file name and generate pickles for both train and test datasets.
 
 ```
 python src/r2python/pickleNpyData.py \
