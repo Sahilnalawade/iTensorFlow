@@ -17,14 +17,14 @@ for ( ct in 1:2 ) {
   for ( k in 1000:(1000+n[ct]-1) ) {
     r1 = rnorm( 1, baserad, 1 )
     r2 = rnorm( 1, baserad, 1 )
-    sim = simulateSphereData( img, radius = c( r1, r1+r2 ), positionNoiseLevel = c( 0, 3 ) )
+    sim = simulateSphereData( img, radius = c( r1, r1+r2 ), positionNoiseLevel = c( 0, 2 ) )
     comdf[ myct,  ] = c( sim$centerOfMass, r1, r2 )
     # antsr framework
     ofn = paste( odir[ct], "/", sep='' )
     dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
     ptsj = antsImageClone( iMath( sim$image, "Normalize") * 255, "unsigned char" )
     ofn = paste( odir[ct], "/sphere", k, ".npy", sep='' )
-    writeANTsImageToNumpy( ptsi, ofn )
+    writeANTsImageToNumpy( sim$image, ofn )
 #    antsImageWrite( ptsj, ofn )
 #    plot( ptsj, doCropping=F, nslices=20, axis=2, window.img=c(0,max(ptsj)) )
     myct = myct + 1
