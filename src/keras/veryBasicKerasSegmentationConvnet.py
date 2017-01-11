@@ -37,7 +37,7 @@ Y_testC = np.array( pd.read_csv(tecom_path) )
 Y_test = to_categorical(Y_testC)
 
 # check an image
-# toimage(X_train[2,0,:,:]).show()
+# toimage(X_train[8,:,:]).show()
 
 nx = X_test.shape[1]
 
@@ -119,7 +119,7 @@ rms = RMSprop()
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 batch_size = 256
-nb_epoch = 20
+nb_epoch = 50
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 

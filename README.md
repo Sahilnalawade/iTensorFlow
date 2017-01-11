@@ -109,7 +109,7 @@ file name and generate pickles for both train and test datasets.
 ```
 # this function assumes input data is square and dimensions can be inferred
 # from the sqrt of the array length (for 2D)
-python src/r2python/pickleNpyData.py \
+python src/r2python/pickleNpyData.py  -d 2 \
   -i data/dim2D/regression/spheresRad/train/singlechannel/ \
   -j data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv
 ```
@@ -133,7 +133,7 @@ Rscript src/R/buildConstantHeaderSyntheticSegmentationDataNumpy.R
 pickle data in python.
 
 ```
-python src/r2python/pickleNpyData.py \
+python src/r2python/pickleNpyData.py -d 2 \
   -i data/dim2D/segmentation/spheresRad/train/singlechannel/ \
   -j data/dim2D/segmentation/spheresRad/train/singlechannel/spheres2Segmentation.csv
 ```

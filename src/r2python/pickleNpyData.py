@@ -4,18 +4,20 @@ def main(argv):
    imageDir = ''
    csvFile = ''
    try:
-      opts, args = getopt.getopt(argv,"hi:j:",["imageDir=","csv="])
+      opts, args = getopt.getopt(argv,"hi:j:d:",["imageDir=","csv=","dim="])
    except getopt.GetoptError:
-      print( 'test.py -i <imageDir> -j <csvFile>' )
+      print( 'test.py -i <imageDir> -j <csvFile> -d <2>' )
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print('test.py -i <imageDir> -j <csvFile>')
+         print('test.py -i <imageDir> -j <csvFile> -d <2>')
          sys.exit()
       elif opt in ("-i", "--imageDir"):
          imageDir = arg
       elif opt in ("-j", "--csv"):
          csvFile = arg
+      elif opt in ("-d", "--dim"):
+         mydim = arg
 
    import numpy as np
    import matplotlib.pyplot as plt
@@ -24,6 +26,7 @@ def main(argv):
    import glob
    from PIL import Image
    from scipy.misc import toimage
+   mydimf = float( mydim )
    base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
    img_dir = os.path.join( base_dir,imageDir)
    com_path= os.path.join( base_dir,csvFile)
@@ -32,7 +35,8 @@ def main(argv):
    # make an array for all this
    n = len( allnpy )
    exdata = np.load( allnpy[1] )
-   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
+#   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
+   nx = int( exdata.shape[0] ** (1. / mydimf ) )
    exarr  = exdata.reshape( [nx, nx ])
    myarr = np.ones( ( n, nx, nx ) )
    for i in range( len( allnpy ) ) :
@@ -48,7 +52,8 @@ def main(argv):
    # make an array for all this
    n = len( allnpy )
    exdata = np.load( allnpy[1] )
-   nx = int( np.sqrt( exdata.shape[0]  ) )
+#   nx = int( np.sqrt( exdata.shape[0]  ) )
+   nx = int( exdata.shape[0] ** (1. / mydimf ) )
    exarr  = exdata.reshape( [nx, nx ])
    temyarr = np.ones( ( n, nx, nx ) )
    for i in range( len( allnpy ) ) :
