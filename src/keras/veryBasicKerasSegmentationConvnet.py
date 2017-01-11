@@ -28,13 +28,16 @@ tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/sing
 # read numpy data
 X_train = np.load( img_fn )['arr_0']
 Y_trainC = np.array( pd.read_csv(com_path) )
-Y_trainC = X_train[:,5,5].round()
+Y_trainCcomp = X_train[:,5,5].round()
 Y_train = to_categorical(Y_trainC)
 
 X_test = np.load( teimg_fn )['arr_0']
 Y_testC = np.array( pd.read_csv(tecom_path) )
-Y_testC = X_test[:,5,5].round()
+Y_testCcomp = X_test[:,5,5].round()
 Y_test = to_categorical(Y_testC)
+
+# check an image
+# toimage(X_train[2,0,:,:]).show()
 
 nx = X_test.shape[1]
 

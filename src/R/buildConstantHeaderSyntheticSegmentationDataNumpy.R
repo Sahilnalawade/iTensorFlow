@@ -30,7 +30,7 @@ for ( ct in 1:length( odir ) ) {
     # plot( sim$image, mymask, alpha=0.25, window.img=c(0,2) )
     patches = imageToPatches( sim$image, mask = mymask, radius = patchRad,
       groundTruth = sim$groundTruth$labels[ mymask == 1 ],
-      npatches = nptch, randomize = TRUE )
+      npatches = nptch, randomize = FALSE )
     if ( ct == 1 & k == lo ) print( patches$patches[[1]] )
     patches$patchSummary
     if ( k == lo ) mydf = patches$patchSummary else mydf = rbind( mydf, patches$patchSummary )
@@ -39,7 +39,8 @@ for ( ct in 1:length( odir ) ) {
   #    patches$patchSummary[ww,]
       ofn = paste( odir[ct], "/", sep='' )
       dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
-      ofn = paste( odir[ct], "/sphere", k,"_",ww,".npy", sep='' )
+      www = stringr::str_pad( ww, 6, pad = "0")
+      ofn = paste( odir[ct], "/sphere", k,"_",www,".npy", sep='' )
       temp = capture.output( writeANTsImageToNumpy( patches$patches[[ ww ]], ofn ) )
       myct = myct + 1
       }
