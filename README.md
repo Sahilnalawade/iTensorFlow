@@ -102,10 +102,10 @@ Rscript src/R/buildConstantHeaderSyntheticDataNumpy.R
 pickle data in python
 
 ```
-# python src/r2python/pickleNpyData.py \
-#  -i data/dim2D/regression/spheresRad/train/singlechannel/ \
-#  -j data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv
-python src/R/buildConstantHeaderSyntheticDataNumpy.py
+python src/r2python/pickleNpyData.py \
+  -i data/dim2D/regression/spheresRad/train/singlechannel/ \
+  -j data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv
+# python src/R/buildConstantHeaderSyntheticDataNumpy.py
 ```
 
 run mnist-based convnet
