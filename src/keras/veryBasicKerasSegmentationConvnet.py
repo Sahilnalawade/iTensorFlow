@@ -16,6 +16,7 @@ from keras.layers import Input, merge, Convolution2D, MaxPooling2D, UpSampling2D
 from keras.optimizers import SGD, RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
+from keras.utils.np_utils import to_categorical
 
 
 base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
@@ -27,9 +28,11 @@ tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/sing
 # read numpy data
 X_train = np.load( img_fn )['arr_0']
 Y_train = np.array( pd.read_csv(com_path) )
+Y_train = to_categorical(Y_train)
 
 X_test = np.load( teimg_fn )['arr_0']
 Y_test = np.array( pd.read_csv(tecom_path) )
+Y_test = to_categorical(Y_test)
 
 nx = X_test.shape[1]
 
@@ -44,8 +47,8 @@ else:
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
-X_train /= 2.5
-X_test /= 2.5
+# X_train /= 2.5
+# X_test /= 2.5
 print('X_train shape:', X_train.shape)
 print(X_train.shape[0], 'train samples', 'groundTruth', Y_train.shape[0])
 print(X_test.shape[0], 'test samples', 'groundTruth', Y_test.shape[0])
@@ -84,7 +87,7 @@ def unet_conv():
 	return model
 
 def mnist_conv():
-    nb_filters = 8
+    nb_filters = 32
     kernel_size = (3, 3)
     pool_size = (2, 2)
     model = Sequential()
@@ -95,21 +98,23 @@ def mnist_conv():
     model.add(Convolution2D(nb_filters, kernel_size[0], kernel_size[1]))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
-    model.add(Dropout(0.25))
+    model.add(Dropout(0.05))
     model.add(Flatten())
-    model.add(Dense(128))
+    model.add(Dense(32))
     model.add(Activation('relu'))
     model.add(Dropout(0.05))
     model.add(Dense( Y_test.shape[1] ))
+    model.add(Activation('softmax'))
     return model
 
 model = mnist_conv()
 
 rms = RMSprop()
-model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
+# model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
+model.compile(loss='categorical_crossentropy', optimizer='adam')
 
-batch_size = 4
-nb_epoch = 50
+batch_size = 32
+nb_epoch = 500
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 
