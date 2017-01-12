@@ -72,12 +72,12 @@ image_input = Input( shape=input_shape, name='image_input' )
 x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu' )( image_input )
 x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu' )( x )
 x = MaxPooling2D( pool_size )( x )
-x = Dropout( 0.05 )( x )
+x = Dropout( 0.5 )( x )
 out = Flatten( )( x )
 position_input = Input(shape=(2,), name='position_input')
 x = merge( [out, position_input], mode='concat' )
 x = Dense( 32, activation='relu'  )( x )
-x = Dropout( 0.05 )( x )
+x = Dropout( 0.25 )( x )
 main_output = Dense( Y_test.shape[1], activation='softmax', name='Segmentation' )( x )
 model = Model(input=[ image_input, position_input], output=[main_output] )
 model.compile( optimizer='adam', loss='categorical_crossentropy' )
@@ -88,7 +88,7 @@ model.compile( optimizer='adam', loss='categorical_crossentropy' )
 
 batch_size = 256
 nb_epoch = 100
-model.fit( [X_train, X_trainPos],  [Y_train], batch_size=batch_size,
+model.fit( [X_train, X_trainPos ],  [Y_train], batch_size=batch_size,
     nb_epoch=nb_epoch, verbose=2 )
 
 trscore = model.evaluate([X_train, X_trainPos], Y_train, verbose=0)
@@ -101,6 +101,10 @@ Y_pred = model.predict( [X_train, X_trainPos] )
 predicted_classes = Y_pred.argmax( axis = 1 )
 correct_indices = np.nonzero( predicted_classes == Y_trainClasses )[0]
 incorrect_indices = np.nonzero(predicted_classes != Y_trainClasses )[0]
+fracr = float( correct_indices.shape[0]  ) / float( Y_trainClasses.shape[0] )
+fracw = float( incorrect_indices.shape[0] ) / float( Y_trainClasses.shape[0] )
+print( " done " )
+print( str( fracr * 100.0 ) + "% right " + str( fracw * 100.0 ) + "% wrong" )
 
 ################################################################################
 teY_pred = model.predict( [X_test, X_testPos] )
@@ -112,3 +116,56 @@ fracr = float( tecorrect_indices.shape[0]  ) / float( Y_testClasses.shape[0] )
 fracw = float( teincorrect_indices.shape[0] ) / float( Y_testClasses.shape[0] )
 print( " done " )
 print( str( fracr * 100.0 ) + "% right " + str( fracw * 100.0 ) + "% wrong" )
+
+
+# visualize some of the weights
+kk = model.layers[1].get_weights()
+W = np.squeeze(kk[0])
+toimage(W[0,:,:]).show() # first filter
+toimage(W[2,:,:]).show() # third filter
+
+import numpy.ma as ma
+import pylab as pl
+import matplotlib.cm as cm
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+def nice_imshow(ax, data, vmin=None, vmax=None, cmap=None):
+    """Wrapper around pl.imshow"""
+    if cmap is None:
+        cmap = cm.jet
+    if vmin is None:
+        vmin = data.min()
+    if vmax is None:
+        vmax = data.max()
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.05)
+    im = ax.imshow(data, vmin=vmin, vmax=vmax, interpolation='nearest', cmap=cmap)
+    pl.colorbar(im, cax=cax)
+
+def make_mosaic(imgs, nrows, ncols, border=1):
+    """
+    Given a set of images with all the same shape, makes a
+    mosaic with nrows and ncols
+    """
+    nimgs = imgs.shape[0]
+    imshape = imgs.shape[1:]
+
+    mosaic = ma.masked_all((nrows * imshape[0] + (nrows - 1) * border,
+                            ncols * imshape[1] + (ncols - 1) * border),
+                            dtype=np.float32)
+
+    paddedh = imshape[0] + border
+    paddedw = imshape[1] + border
+    for i in range(nimgs):
+        row = int(np.floor(i / ncols))
+        col = i % ncols
+
+        mosaic[row * paddedh:row * paddedh + imshape[0],
+               col * paddedw:col * paddedw + imshape[1]] = imgs[i]
+    return mosaic
+
+#pl.imshow(make_mosaic(np.random.random((9, 10, 10)), 3, 3, border=1))
+
+pl.figure( figsize=( 15, 15 ) )
+pl.title( 'conv1 weights' )
+nice_imshow( pl.gca(), make_mosaic(W, 6, 6), -0.1, 0.1, cmap=cm.binary)
