@@ -121,9 +121,9 @@ rms = RMSprop()
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 batch_size = 256
-nb_epoch = 15
-model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-          verbose=2, validation_data=(X_test, Y_test))
+nb_epoch = 50
+model.fit( X_train, Y_train, batch_size=batch_size,
+    nb_epoch=nb_epoch, verbose=2 )
 
 trscore = model.evaluate(X_train, Y_train, verbose=0)
 print('Train score:', trscore )

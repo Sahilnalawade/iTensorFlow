@@ -75,7 +75,7 @@ x = MaxPooling2D( pool_size )( x )
 x = Dropout( 0.05 )( x )
 out = Flatten( )( x )
 position_input = Input(shape=(2,), name='aux_input')
-x = merge([out, position_input], mode='concat')
+x = merge( [out, position_input], mode='concat' )
 x = Dense( 32, activation='relu'  )( x )
 x = Dropout( 0.05 )( x )
 main_output = Dense( Y_test.shape[1], activation='softmax', name='main_output' )( x )
@@ -83,7 +83,7 @@ model = Model(input=[ image_input, position_input], output=[main_output] )
 model.compile( optimizer='adam', loss='categorical_crossentropy' )
 
 batch_size = 256
-nb_epoch = 50
+nb_epoch = 100
 model.fit( [X_train, X_trainPos],  [Y_train], batch_size=batch_size,
     nb_epoch=nb_epoch, verbose=2 )
 
