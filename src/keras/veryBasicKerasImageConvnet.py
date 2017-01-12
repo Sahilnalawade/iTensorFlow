@@ -88,8 +88,8 @@ def mnist_conv():
     kernel_size = (3, 3)
     pool_size = (2, 2)
     model = Sequential()
-    model.add(Convolution2D( 32, kernel_size[0], kernel_size[1],
-                            border_mode='valid', init = 'normal',
+    model.add(Convolution2D( nb_filters, kernel_size[0], kernel_size[1],
+                            border_mode='valid',
                             input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Convolution2D(nb_filters, kernel_size[0], kernel_size[1]))

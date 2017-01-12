@@ -54,5 +54,5 @@ for ( ct in 1:length( odir ) ) {
     }
     if ( myct != nrow( mydf ) ) stop("Error")
     ofn = paste( odir[ct], "/spheres", mydim, "Segmentation.csv", sep='' )
-    write.csv( mydf[,-c(1:(ncol(mydf)-1))], ofn, row.names=F )
+    write.csv( mydf[,-c(1:2)], ofn, row.names=F )
   }

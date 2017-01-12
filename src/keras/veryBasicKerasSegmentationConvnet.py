@@ -29,12 +29,14 @@ tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/sing
 X_train = np.load( img_fn )['arr_0']
 Y_trainC = np.array( pd.read_csv(com_path) )
 # Y_trainCcomp = X_train[:,5,5].round()
-Y_train = to_categorical(Y_trainC)
+Y_trainC = Y_trainC[:,Y_trainC.shape[1]-1]
+Y_train = to_categorical( Y_trainC )
 
 X_test = np.load( teimg_fn )['arr_0']
 Y_testC = np.array( pd.read_csv(tecom_path) )
 # Y_testCcomp = X_test[:,5,5].round()
-Y_test = to_categorical(Y_testC)
+Y_testC = Y_testC[:,Y_testC.shape[1]-1]
+Y_test = to_categorical( Y_testC )
 
 # check an image
 # toimage(X_train[8,:,:]).show()
@@ -97,7 +99,7 @@ def mnist_conv():
     pool_size = (2, 2)
     model = Sequential()
     model.add(Convolution2D( nb_filters, kernel_size[0], kernel_size[1],
-                            border_mode='valid', init = 'normal',
+                            border_mode='valid',
                             input_shape=input_shape))
     model.add(Activation('relu'))
     model.add(Convolution2D(nb_filters, kernel_size[0], kernel_size[1]))
@@ -119,7 +121,7 @@ rms = RMSprop()
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 batch_size = 256
-nb_epoch = 50
+nb_epoch = 5
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
           verbose=2, validation_data=(X_test, Y_test))
 
@@ -131,13 +133,13 @@ print('Test score:', tescore )
 ################################################################################
 Y_pred = model.predict( X_train )
 predicted_classes = model.predict_classes(X_train)
-correct_indices = np.nonzero(predicted_classes == Y_trainC[:,0])[0]
-incorrect_indices = np.nonzero(predicted_classes != Y_trainC[:,0])[0]
+correct_indices = np.nonzero( predicted_classes == Y_trainC )
+incorrect_indices = np.nonzero( predicted_classes != Y_trainC )
 
 ################################################################################
 tepredicted_classes = model.predict_classes(X_test)
-tecorrect_indices = np.nonzero(tepredicted_classes == Y_testC[:,0])[0]
-teincorrect_indices = np.nonzero(tepredicted_classes != Y_testC[:,0])[0]
+tecorrect_indices = np.nonzero(tepredicted_classes == Y_testC )[0]
+teincorrect_indices = np.nonzero(tepredicted_classes != Y_testC )[0]
 
 fracr = float( tecorrect_indices.shape[0]  ) / float( Y_testC.shape[0] )
 fracw = float( teincorrect_indices.shape[0] ) / float( Y_testC.shape[0] )
