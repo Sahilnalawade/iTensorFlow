@@ -86,7 +86,6 @@ batch_size = 256
 nb_epoch = 50
 model.fit( [X_train, X_trainPos],  [Y_train], batch_size=batch_size,
     nb_epoch=nb_epoch, verbose=2 )
-#    , validation_data=([X_test,X_testPos], Y_test))
 
 trscore = model.evaluate([X_train, X_trainPos], Y_train, verbose=0)
 print('Train score:', trscore )
