@@ -6,13 +6,12 @@ library( ANTsRNpy )
 temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
   stop("run this script within the iTensorFlow base dir")
-n = c( 1000, 200 )
-n = c( 10, 5 )
 mydim = 3
 mydim = round( as.numeric( args[1] ) )
 if ( mydim == 3 ) cbp = FALSE else cbp = TRUE
+if ( mydim == 2 ) n = c( 1000, 50 ) else n = c( 10, 5 )
 idim = rep( 32, mydim )
-odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/singlechannel","test/singlechannel"),"/", sep='' )
+odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/multichannel","test/multichannel"),"/", sep='' )
 img = makeImage( idim, voxval = 0, spacing = rep(1, length(idim)) )
 baserad = 4
 patchRad = 5
@@ -37,7 +36,7 @@ for ( ct in 1:length( odir ) ) {
     sim = simulateSphereData( img, radius = c( r1, r1+r2 ),
       noiseLevel = c(0, 0.2 ), positionNoiseLevel = c( 0, 2 ), classByPosition = cbp )
     mymask = morphology( getMask( sim$image ), "dilate", 2 )
-    patches = imageToPatches( sim$image, mask = mymask, radius = patchRad,
+    patches = multiChannelImageToPatches( sim$mcimage, mask = mymask, radius = patchRad,
         groundTruth = sim$groundTruth$labels[ mymask == 1 ],
         npatches = nptch, randomize = myran )
     if ( ct == 1 & k == lo ) print( patches$patches[[1]] )

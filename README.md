@@ -144,3 +144,30 @@ run mnist-based convnet
 ```
 python src/keras/veryBasicKerasSegmentationConvnet${dim}D.py
 ```
+
+
+
+## multi-channel segmentation example from data creation to generalizable output
+
+WIP - not done
+
+prepare data from R
+
+```
+dim=2
+Rscript src/R/buildConstantHeaderSyntheticMultichannelSegmentationDataNumpy.R $dim
+```
+
+pickle data in python.
+
+```
+python src/r2python/pickleMCNpyData.py -d $dim \
+  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/ \
+  -j data/dim${dim}D/segmentation/spheresRad/train/multichannel/spheres${dim}Segmentation.csv
+```
+
+run mnist-based convnet
+
+```
+python src/keras/posiSegConvMC.py
+```

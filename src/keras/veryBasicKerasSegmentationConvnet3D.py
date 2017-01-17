@@ -87,7 +87,7 @@ rms = RMSprop()
 # model.compile( loss='mse', optimizer=rms, metrics=['mse'] )
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
-batch_size = 256
+batch_size = 100
 nb_epoch = 50
 model.fit( X_train, Y_train, batch_size=batch_size,
     nb_epoch=nb_epoch, verbose=2 )
