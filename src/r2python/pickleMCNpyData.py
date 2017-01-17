@@ -36,9 +36,8 @@ def main(argv):
    # make an array for all this
    n = len( allnpy )
    exdata = np.load( allnpy[1] )
-#   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
    nx = round( exdata.shape[1] ** (1. / mydimf ) )
-   nchan = exdata.shape[0]
+   nchan = int( exdata.shape[0] )
    if round( mydimf ) == 2:
      exarr  = exdata.reshape( [nchan, nx, nx ])
      myarr = np.ones( ( n, nchan, nx, nx ) )
