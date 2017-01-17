@@ -1,3 +1,4 @@
+args <- commandArgs(trailingOnly = TRUE)
 library( ANTsR )
 library( jpeg )
 library( ANTsRNpy )
@@ -5,9 +6,11 @@ library( ANTsRNpy )
 temp = unlist(strsplit(getwd(),"/"))
 if ( temp[ length( temp ) ] != "iTensorFlow" )
   stop("run this script within the iTensorFlow base dir")
-n = c(1000,200)
-n = c(100,50)
-mydim = 2
+n = c( 1000, 200 )
+n = c( 10, 5 )
+mydim = 3
+mydim = round( as.numeric( args[1] ) )
+if ( mydim == 3 ) cbp = FALSE else cbp = TRUE
 idim = rep( 32, mydim )
 odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/singlechannel","test/singlechannel"),"/", sep='' )
 img = makeImage( idim, voxval = 0, spacing = rep(1, length(idim)) )
@@ -25,14 +28,14 @@ for ( ct in 1:length( odir ) ) {
     myran = TRUE
     } else {
       print("testing data")
-      nptch = NA
+      nptch = 10
       myran = FALSE
     }
   for ( k in lo:(lo+n[ct]-1) ) {
     r1 = rnorm( 1, baserad, 1 )
     r2 = rnorm( 1, round( baserad * 0.75 ) , 1 )
     sim = simulateSphereData( img, radius = c( r1, r1+r2 ),
-      noiseLevel = c(0, 0.2 ), positionNoiseLevel = c( 0, 2 ), classByPosition = T )
+      noiseLevel = c(0, 0.2 ), positionNoiseLevel = c( 0, 2 ), classByPosition = cbp )
     mymask = morphology( getMask( sim$image ), "dilate", 2 )
 #    print( sum(mymask) )
     # plot( sim$image, mymask, alpha=0.25, window.img=c(0,2) )

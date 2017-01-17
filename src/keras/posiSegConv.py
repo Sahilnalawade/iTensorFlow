@@ -14,6 +14,7 @@ from keras.models import Model, Sequential
 from keras.layers import Dense, Input, Flatten, Dropout, Activation
 from keras.layers import Input, merge, Convolution2D, MaxPooling2D, UpSampling2D
 from keras.optimizers import SGD, RMSprop
+from keras.regularizers import l2, activity_l2, l1, activity_l1
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 from keras.utils.np_utils import to_categorical
@@ -67,16 +68,21 @@ def inception():
 
 nb_filters = 32
 kernel_size = (3, 3)
+kernel_size2 = (5, 5)
 pool_size = (2, 2)
+l1r = 1.e-3
 image_input = Input( shape=input_shape, name='image_input' )
-x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu' )( image_input )
-x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu' )( x )
+x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu', W_regularizer=l1(l1r) )( image_input )
+x = Convolution2D( nb_filters, kernel_size[0], kernel_size[1], activation='relu', W_regularizer=l1(l1r) )( x )
 x = MaxPooling2D( pool_size )( x )
-x = Dropout( 0.5 )( x )
-out = Flatten( )( x )
+x = Dropout( 0.25 )( x )
+imgout = Flatten( )( x )
 position_input = Input(shape=(2,), name='position_input')
-x = merge( [out, position_input], mode='concat' )
-x = Dense( 32, activation='relu'  )( x )
+# y = Dense( 12, W_regularizer=l1(l1r) )( position_input )
+x = merge( [ imgout, position_input ], mode='concat' )
+x = Dense( 256, W_regularizer=l1(l1r), activation='relu'  )( x )
+# x = Dropout( 0.25 )( x )
+x = Dense( 256, W_regularizer=l1(l1r), activation='relu'  )( x )
 x = Dropout( 0.25 )( x )
 main_output = Dense( Y_test.shape[1], activation='softmax', name='Segmentation' )( x )
 model = Model(input=[ image_input, position_input], output=[main_output] )
@@ -86,8 +92,8 @@ model.compile( optimizer='adam', loss='categorical_crossentropy' )
 # from keras.utils.visualize_util import plot
 # plot(model, to_file='model.png')
 
-batch_size = 256
-nb_epoch = 100
+batch_size = 512
+nb_epoch = 999
 model.fit( [X_train, X_trainPos ],  [Y_train], batch_size=batch_size,
     nb_epoch=nb_epoch, verbose=2 )
 
@@ -117,12 +123,24 @@ fracw = float( teincorrect_indices.shape[0] ) / float( Y_testClasses.shape[0] )
 print( " done " )
 print( str( fracr * 100.0 ) + "% right " + str( fracw * 100.0 ) + "% wrong" )
 
+import pandas
+my_series = pandas.Series( Y_testClasses  )
+print( "Test" )
+print(  my_series.value_counts() )
+my_series = pandas.Series( tepredicted_classes  )
+print( "Test" )
+print(  my_series.value_counts() )
+
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+# print( confusion_matrix( Y_testClasses, tepredicted_classes ) )
+print(classification_report( Y_testClasses, tepredicted_classes ) )
 
 # visualize some of the weights
 kk = model.layers[1].get_weights()
 W = np.squeeze(kk[0])
-toimage(W[0,:,:]).show() # first filter
-toimage(W[2,:,:]).show() # third filter
+# toimage(W[0,:,:]).show() # first filter
+# toimage(W[2,:,:]).show() # third filter
 
 import numpy.ma as ma
 import pylab as pl
@@ -168,4 +186,4 @@ def make_mosaic(imgs, nrows, ncols, border=1):
 
 pl.figure( figsize=( 15, 15 ) )
 pl.title( 'conv1 weights' )
-nice_imshow( pl.gca(), make_mosaic(W, 6, 6), -0.1, 0.1, cmap=cm.binary)
+# nice_imshow( pl.gca(), make_mosaic(W, 6, 6), -0.1, 0.1, cmap=cm.binary)

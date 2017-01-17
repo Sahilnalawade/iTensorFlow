@@ -27,6 +27,7 @@ def main(argv):
    from PIL import Image
    from scipy.misc import toimage
    mydimf = float( mydim )
+   print("pickle train data")
    base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
    img_dir = os.path.join( base_dir,imageDir)
    com_path= os.path.join( base_dir,csvFile)
@@ -36,13 +37,19 @@ def main(argv):
    n = len( allnpy )
    exdata = np.load( allnpy[1] )
 #   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
-   nx = int( exdata.shape[0] ** (1. / mydimf ) )
-   exarr  = exdata.reshape( [nx, nx ])
-   myarr = np.ones( ( n, nx, nx ) )
-   for i in range( len( allnpy ) ) :
-       myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
-
+   nx = round( exdata.shape[0] ** (1. / mydimf ) )
+   if round( mydimf ) == 2:
+       exarr  = exdata.reshape( [nx, nx ])
+       myarr = np.ones( ( n, nx, nx ) )
+       for i in range( len( allnpy ) ) :
+           myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
+   if round( mydimf ) == 3:
+       exarr  = exdata.reshape( [nx, nx, nx ])
+       myarr = np.ones( ( n, nx, nx, nx ) )
+       for i in range( len( allnpy ) ) :
+           myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx, nx ])
    np.savez( img_dir + "all.npz", myarr )
+
    imageDir2 = imageDir.replace("train", "test")
    csvFile2 = csvFile.replace("train", "test")
    img_dir = os.path.join( base_dir,imageDir2)
@@ -51,15 +58,21 @@ def main(argv):
    allnpy = sorted( glob.glob( img_dir + "*npy" ) )
    # make an array for all this
    n = len( allnpy )
+   print( "pickle test data:" + str( n ) )
    exdata = np.load( allnpy[1] )
-#   nx = int( np.sqrt( exdata.shape[0]  ) )
-   nx = int( exdata.shape[0] ** (1. / mydimf ) )
-   exarr  = exdata.reshape( [nx, nx ])
-   temyarr = np.ones( ( n, nx, nx ) )
-   for i in range( len( allnpy ) ) :
-       temyarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
+   nx = round( exdata.shape[0] ** (1. / mydimf ) )
+   if round( mydimf ) == 2:
+       exarr  = exdata.reshape( [nx, nx ])
+       myarr = np.ones( ( n, nx, nx ) )
+       for i in range( len( allnpy ) ) :
+           myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx ])
+   if round( mydimf ) == 3:
+       exarr  = exdata.reshape( [nx, nx, nx ])
+       myarr = np.ones( ( n, nx, nx, nx ) )
+       for i in range( len( allnpy ) ) :
+           myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx, nx ])
 
-   np.savez( img_dir + "all.npz", temyarr )
+   np.savez( img_dir + "all.npz", myarr )
 
 if __name__ == "__main__":
    main(sys.argv[1:])

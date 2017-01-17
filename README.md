@@ -127,19 +127,20 @@ WIP - not done
 prepare data from R
 
 ```
-Rscript src/R/buildConstantHeaderSyntheticSegmentationDataNumpy.R
+dim=3
+Rscript src/R/buildConstantHeaderSyntheticSegmentationDataNumpy.R $dim
 ```
 
 pickle data in python.
 
 ```
-python src/r2python/pickleNpyData.py -d 2 \
-  -i data/dim2D/segmentation/spheresRad/train/singlechannel/ \
-  -j data/dim2D/segmentation/spheresRad/train/singlechannel/spheres2Segmentation.csv
+python src/r2python/pickleNpyData.py -d $dim \
+  -i data/dim${dim}D/segmentation/spheresRad/train/singlechannel/ \
+  -j data/dim${dim}D/segmentation/spheresRad/train/singlechannel/spheres${dim}Segmentation.csv
 ```
 
 run mnist-based convnet
 
 ```
-python src/keras/veryBasicKerasSegmentationConvnet.py
+python src/keras/veryBasicKerasSegmentationConvnet${dim}D.py
 ```
