@@ -34,9 +34,9 @@ def main(argv):
    targets = np.array( pd.read_csv(com_path) )
    allnpy = sorted( glob.glob( img_dir + "*npy" ) )
    # make an array for all this
-   n = len( allnpy )
+   n = int( len( allnpy ) )
    exdata = np.load( allnpy[1] )
-   nx = round( exdata.shape[1] ** (1. / mydimf ) )
+   nx = int( round( exdata.shape[1] ** (1. / mydimf ) ) )
    nchan = int( exdata.shape[0] )
    if round( mydimf ) == 2:
      exarr  = exdata.reshape( [nchan, nx, nx ])
@@ -56,7 +56,7 @@ def main(argv):
    tetargets = np.array( pd.read_csv(com_path) )
    allnpy = sorted( glob.glob( img_dir + "*npy" ) )
    # make an array for all this
-   n = len( allnpy )
+   n = int( len( allnpy ) )
    print( "pickle test data:" + str( n ) )
    if round( mydimf ) == 2:
      exarr  = exdata.reshape( [nchan, nx, nx ])
