@@ -19,9 +19,9 @@ from keras import backend as K
 
 
 base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
-img_fn = os.path.join( base_dir,'data/dim2D/regression/spheresRad/train/singlechannel/all.npz')
+img_fn = os.path.join( base_dir,'data/dim2D/regression/spheresRad/train/singlechannel/Image_all.npz')
 com_path= os.path.join( base_dir,'data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv')
-teimg_fn = os.path.join( base_dir,'data/dim2D/regression/spheresRad/test/singlechannel/all.npz')
+teimg_fn = os.path.join( base_dir,'data/dim2D/regression/spheresRad/test/singlechannel/Image_all.npz')
 tecom_path= os.path.join( base_dir,'data/dim2D/regression/spheresRad/test/singlechannel/spheres2Radius.csv')
 
 # read numpy data

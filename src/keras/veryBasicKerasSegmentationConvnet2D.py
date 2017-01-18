@@ -20,9 +20,9 @@ from keras.utils.np_utils import to_categorical
 
 
 base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
-img_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/singlechannel/all.npz')
+img_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/singlechannel/Image_all.npz')
 com_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/singlechannel/spheres2Segmentation.csv')
-teimg_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/singlechannel/all.npz')
+teimg_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/singlechannel/Image_all.npz')
 tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/singlechannel/spheres2Segmentation.csv')
 
 # read numpy data

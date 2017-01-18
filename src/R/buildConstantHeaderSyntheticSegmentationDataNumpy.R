@@ -46,7 +46,7 @@ for ( ct in 1:length( odir ) ) {
       ofn = paste( odir[ct], "/", sep='' )
       dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
       www = stringr::str_pad( ww, 6, pad = "0")
-      ofn = paste( odir[ct], "/sphere", k,"_",www,".npy", sep='' )
+      ofn = paste( odir[ct], "/sphere", k,"_",www,"Image.npy", sep='' )
       temp = capture.output( writeANTsImageToNumpy( patches$patches[[ ww ]], ofn ) )
       myct = myct + 1
       }
