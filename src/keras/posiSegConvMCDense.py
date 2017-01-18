@@ -29,12 +29,13 @@ teseg_fn= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/multic
 X_train = np.load( img_fn )['arr_0']
 Y_train = np.load( seg_fn )['arr_0']
 Y_trainC = to_categorical( Y_train )
-Y_train = Y_trainC.reshape( Y_train.shape[0], Y_trainC.shape[1], Y_train.shape[1] * Y_train.shape[2] )
+nclasses = Y_trainC.shape[1]
+Y_train = Y_trainC.reshape( Y_train.shape[0], nclasses, Y_train.shape[1] * Y_train.shape[2] )
 
 X_test = np.load( teimg_fn )['arr_0']
 Y_test = np.load( teseg_fn )['arr_0']
 Y_testC = to_categorical( Y_test )
-Y_test = Y_testC.reshape( Y_test.shape[0], Y_testC.shape[1], Y_test.shape[1] * Y_test.shape[2] )
+Y_test = Y_testC.reshape( Y_test.shape[0], nclasses, Y_test.shape[1] * Y_test.shape[2] )
 
 nc = X_test.shape[1]
 nx = X_test.shape[2]
@@ -90,17 +91,17 @@ def get_unet():
     up9 = merge([UpSampling2D(size=(2, 2))(conv8), conv1], mode='concat', concat_axis=1)
     conv9 = Convolution2D(32, 3, 3, activation='relu', border_mode='same')(up9)
     conv9 = Convolution2D(32, 3, 3, activation='relu', border_mode='same')(conv9)
-    conv10 = Convolution2D(3, 1, 1, activation='sigmoid')(conv9)
+    conv10 = Convolution2D(nclasses, 1, 1, activation='relu')(conv9)
     imgout = Flatten( )( conv10 )
-    dx = Dense( nx * nx * nc , activation='softmax' )( imgout )
-    dxr = Reshape( (3, nx * nx) )( dx )
+    dx = Dense( nx * nx * nclasses , activation='softmax' )( imgout )
+    dxr = Reshape( (nclasses, nx * nx) )( dx )
     model = Model(input=inputs, output=dxr )
     return model
 
 umodel = get_unet()
 umodel.compile( optimizer='adam', loss='categorical_crossentropy' )
 batch_size = 1000
-nb_epoch = 5
+nb_epoch = 25
 umodel.fit( X_train, Y_train , batch_size=batch_size, nb_epoch=nb_epoch, verbose=2 )
 
 # import pydot_ng as pydot

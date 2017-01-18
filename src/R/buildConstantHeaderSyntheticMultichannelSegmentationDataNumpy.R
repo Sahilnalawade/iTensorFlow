@@ -19,7 +19,7 @@ msk = img * 0 + 1
 spatmask = imageDomainToSpatialMatrix( img, msk )
 lo = 10000
 print( odir )
-doPatches = TRUE
+doPatches = FALSE
 for ( ct in 1:length( odir ) ) {
   myct = 0
   if ( ct == 1 ) {
