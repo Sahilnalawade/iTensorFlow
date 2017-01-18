@@ -9,7 +9,7 @@ if ( temp[ length( temp ) ] != "iTensorFlow" )
 mydim = 3
 mydim = round( as.numeric( args[1] ) )
 if ( mydim == 3 ) cbp = FALSE else cbp = TRUE
-if ( mydim == 2 ) n = c( 100, 25 ) else n = c( 10, 5 )
+if ( mydim == 2 ) n = c( 200, 50 ) else n = c( 10, 5 )
 idim = rep( 32, mydim )
 odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/multichannel","test/multichannel"),"/", sep='' )
 img = makeImage( idim, voxval = 0, spacing = rep(1, length(idim)) )
