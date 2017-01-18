@@ -111,7 +111,7 @@ file name and generate pickles for both train and test datasets.
 # from the sqrt of the array length (for 2D)
 python src/r2python/pickleNpyData.py  -d 2 \
   -i data/dim2D/regression/spheresRad/train/singlechannel/ \
-  -j data/dim2D/regression/spheresRad/train/singlechannel/spheres2Radius.csv
+  -j Image
 ```
 
 run mnist-based convnet
@@ -127,7 +127,7 @@ WIP - not done
 prepare data from R
 
 ```
-dim=3
+dim=2
 Rscript src/R/buildConstantHeaderSyntheticSegmentationDataNumpy.R $dim
 ```
 
@@ -136,7 +136,7 @@ pickle data in python.
 ```
 python src/r2python/pickleNpyData.py -d $dim \
   -i data/dim${dim}D/segmentation/spheresRad/train/singlechannel/ \
-  -j data/dim${dim}D/segmentation/spheresRad/train/singlechannel/spheres${dim}Segmentation.csv
+  -j Image
 ```
 
 run mnist-based convnet
@@ -161,9 +161,10 @@ Rscript src/R/buildConstantHeaderSyntheticMultichannelSegmentationDataNumpy.R $d
 pickle data in python.
 
 ```
-python src/r2python/pickleMCNpyData.py -d $dim \
-  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/ \
-  -j data/dim${dim}D/segmentation/spheresRad/train/multichannel/spheres${dim}Segmentation.csv
+python src/r2python/pickleMCNpyData.py -d $dim   \
+  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/  -j Image
+python src/r2python/pickleNpyData.py -d $dim \
+  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/ -j Seg
 ```
 
 run mnist-based convnet

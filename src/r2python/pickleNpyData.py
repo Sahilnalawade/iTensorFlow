@@ -2,20 +2,20 @@
 import sys, getopt
 def main(argv):
    imageDir = ''
-   csvFile = ''
+   myExt = ''
    try:
-      opts, args = getopt.getopt(argv,"hi:j:d:",["imageDir=","csv=","dim="])
+      opts, args = getopt.getopt(argv,"hi:j:d:",["imageDir=","ext=","dim="])
    except getopt.GetoptError:
-      print( 'test.py -i <imageDir> -j <csvFile> -d <2>' )
+      print( 'test.py -i <imageDir> -j <ext> -d <2>' )
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print('test.py -i <imageDir> -j <csvFile> -d <2>')
+         print('test.py -i <imageDir> -j <ext> -d <2>')
          sys.exit()
       elif opt in ("-i", "--imageDir"):
          imageDir = arg
-      elif opt in ("-j", "--csv"):
-         csvFile = arg
+      elif opt in ("-j", "--ext"):
+         myExt = arg
       elif opt in ("-d", "--dim"):
          mydim = arg
 
@@ -30,11 +30,11 @@ def main(argv):
    print("pickle train data")
    base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
    img_dir = os.path.join( base_dir,imageDir)
-   com_path= os.path.join( base_dir,csvFile)
-   targets = np.array( pd.read_csv(com_path) )
-   allnpy = sorted( glob.glob( img_dir + "*npy" ) )
+   ext = "*"+myExt+"*.npy"
+   allnpy = sorted( glob.glob( img_dir + ext ) )
    # make an array for all this
    n = len( allnpy )
+   print( "have " + str(n) + " data points with ext " + ext )
    exdata = np.load( allnpy[1] )
 #   nx = int( np.sqrt( exdata.shape[0]  ) ) # we assume data is square!
    nx = round( exdata.shape[0] ** (1. / mydimf ) )
@@ -48,19 +48,18 @@ def main(argv):
        myarr = np.ones( ( n, nx, nx, nx ) )
        for i in range( len( allnpy ) ) :
            myarr[ i,:,:] = np.load( allnpy[i] ).reshape( [nx, nx, nx ])
-   np.savez( img_dir + "all.npz", myarr )
+   ofn = img_dir + myExt + "_all.npz"
+   print( "write " + ofn )
+   np.savez( ofn, myarr )
+ # done
 
    imageDir2 = imageDir.replace("train", "test")
-   csvFile2 = csvFile.replace("train", "test")
    img_dir = os.path.join( base_dir,imageDir2)
-   com_path= os.path.join( base_dir,csvFile2)
-   tetargets = np.array( pd.read_csv(com_path) )
-   allnpy = sorted( glob.glob( img_dir + "*npy" ) )
    # make an array for all this
+   allnpy = sorted( glob.glob( img_dir + ext ) )
    n = len( allnpy )
-   print( "pickle test data:" + str( n ) )
+   print( "pickle test data:" + str( n ) + " eg " + allnpy[1] )
    exdata = np.load( allnpy[1] )
-   nx = round( exdata.shape[0] ** (1. / mydimf ) )
    if round( mydimf ) == 2:
        exarr  = exdata.reshape( [nx, nx ])
        myarr = np.ones( ( n, nx, nx ) )
@@ -71,8 +70,10 @@ def main(argv):
        myarr = np.ones( ( n, nx, nx, nx ) )
        for i in range( len( allnpy ) ) :
            myarr[ i,:,:,:] = np.load( allnpy[i] ).reshape( [nx, nx, nx ])
-
-   np.savez( img_dir + "all.npz", myarr )
+   ofn = img_dir + myExt + "_all.npz"
+   print( "write " + ofn )
+   np.savez( ofn, myarr )
+ # done
 
 if __name__ == "__main__":
    main(sys.argv[1:])
