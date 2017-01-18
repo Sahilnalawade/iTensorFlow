@@ -9,7 +9,7 @@ if ( temp[ length( temp ) ] != "iTensorFlow" )
 mydim = 3
 mydim = round( as.numeric( args[1] ) )
 if ( mydim == 3 ) cbp = FALSE else cbp = TRUE
-if ( mydim == 2 ) n = c( 200, 25 ) else n = c( 10, 5 )
+if ( mydim == 2 ) n = c( 100, 25 ) else n = c( 10, 5 )
 idim = rep( 32, mydim )
 odir = paste( "data/dim", length(idim), "D/segmentation/spheresRad/", c("train/multichannel","test/multichannel"),"/", sep='' )
 img = makeImage( idim, voxval = 0, spacing = rep(1, length(idim)) )
@@ -19,7 +19,7 @@ msk = img * 0 + 1
 spatmask = imageDomainToSpatialMatrix( img, msk )
 lo = 10000
 print( odir )
-doPatches = FALSE
+doPatches = TRUE
 for ( ct in 1:length( odir ) ) {
   myct = 0
   if ( ct == 1 ) {
@@ -47,7 +47,7 @@ for ( ct in 1:length( odir ) ) {
         ofn = paste( odir[ct], "/", sep='' )
         dir.create( ofn, showWarnings = FALSE, recursive = TRUE, mode = "0777")
         www = stringr::str_pad( ww, 6, pad = "0")
-        ofn = paste( odir[ct], "/sphere", k,"_",www,".npy", sep='' )
+        ofn = paste( odir[ct], "/sphere", k,"_",www,"Image.npy", sep='' )
         temp = capture.output( writeANTsImageToNumpy( patches$patches[[ ww ]], ofn ) )
         myct = myct + 1
         }

@@ -20,9 +20,9 @@ from keras import backend as K
 from keras.utils.np_utils import to_categorical
 
 base_dir = os.environ.get('HOME')+'/code/iTensorFlow/'
-img_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/multichannel/all.npz')
+img_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/multichannel/Image_all.npz')
 com_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/train/multichannel/spheres2Segmentation.csv')
-teimg_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/multichannel/all.npz')
+teimg_fn = os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/multichannel/Image_all.npz')
 tecom_path= os.path.join( base_dir,'data/dim2D/segmentation/spheresRad/test/multichannel/spheres2Segmentation.csv')
 
 # read numpy data

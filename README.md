@@ -163,8 +163,8 @@ pickle data in python.
 ```
 python src/r2python/pickleMCNpyData.py -d $dim   \
   -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/  -j Image
-python src/r2python/pickleNpyData.py -d $dim \
-  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/ -j Seg
+# python src/r2python/pickleNpyData.py -d $dim \
+#  -i data/dim${dim}D/segmentation/spheresRad/train/multichannel/ -j Seg
 ```
 
 run mnist-based convnet
